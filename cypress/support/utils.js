@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-export function gerarUsuarioFake(overrides = {}) {
+export function generateFakeUser(overrides = {}) {
   return {
     name: faker.person.fullName(),
     email: faker.internet.email(),
@@ -8,11 +8,27 @@ export function gerarUsuarioFake(overrides = {}) {
   };
 }
 
-export function criarUsuario({ dados, aceitarErro = false }) {
+export function createUser({ data, acceptError = false }) {
   return cy.request({
     method: "POST",
     url: "/users",
-    body: dados,
-    failOnStatusCode: !aceitarErro
+    body: data,
+    failOnStatusCode: !acceptError
+  });
+}
+
+export function generateFakeTicket(overrides = {}) {
+  return {
+    userId: overrides.userId || 1,
+    description: faker.lorem.sentence(),
+  };
+}
+
+export function createTicket({ data, acceptError = false }) {
+  return cy.request({
+    method: "POST",
+    url: "/tickets",
+    body: data,
+    failOnStatusCode: !acceptError
   });
 }
