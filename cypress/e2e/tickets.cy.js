@@ -1,7 +1,7 @@
 import { generateFakeUser, createUser, generateFakeTicket, createTicket } from '../support/utils';
 import { faker } from '@faker-js/faker';
 
-describe('Ticket tests', () => {
+describe('Tickets - Success Cases', () => {
 
   let ticketId;
   let userId;
@@ -97,7 +97,7 @@ describe('Ticket tests', () => {
 
 });
 
-describe('Ticket tests with error', () => {
+describe('Tickets - Error Handling', () => {
 
   it('Should not allow ticket creation without userId', () => {
     const ticket = generateFakeTicket();

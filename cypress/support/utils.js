@@ -19,8 +19,8 @@ export function createUser({ data, acceptError = false }) {
 
 export function generateFakeTicket(overrides = {}) {
   return {
-    userId: overrides.userId || 1,
     description: faker.lorem.sentence(),
+    ...overrides
   };
 }
 

@@ -1,15 +1,8 @@
-# Cypress screenshots and videos
 cypress/screenshots/
 cypress/videos/
-
-# Mochawesome report files
 cypress/reports/
 mochawesome-report/
 mochawesome.json
-
-# Node modules (caso ainda não esteja)
 node_modules/
-
-# Arquivos de cache ou temporários
 *.log
 .DS_Store

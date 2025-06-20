@@ -1,7 +1,7 @@
 import { generateFakeUser, createUser } from '../support/utils';
 import { faker } from '@faker-js/faker';
 
-describe('User tests', () => {
+describe('Users - Success Cases', () => {
 
   let user;
   let userId;
@@ -20,17 +20,15 @@ describe('User tests', () => {
   });
 
   it("Should retrieve all users", () => {
-    cy.request("GET", `/users`).should((response) => {
-      console.log("All users", response);
+    cy.request("GET", `/users`).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.be.an('array');
+      cy.log(`Total users returned: ${response.body.length}`);
     });
   });
 
   it("Should retrieve a user by ID", () => {
-    cy.wrap(null).should(() => {
-      expect(userId).to.exist;
-    });
+    expect(userId).to.exist;
 
     cy.request("GET", `/users/${userId}`).should((response) => {
       console.log("Specific user", response);
@@ -41,28 +39,12 @@ describe('User tests', () => {
   });
 
   it("Should update an existing user's data", () => {
-    const novoNome = `QA ${Date.now()}`;
-    cy.request("PUT", `/users/${userId}`, { name: novoNome }).then((response) => {
-      console.log("Usuario atualizado", response);
+    const newName = `QA ${Date.now()}`;
+    cy.request("PUT", `/users/${userId}`, { name: newName }).then((response) => {
+      console.log("User updated", response);
       expect(response.status).to.eq(200);
-      expect(response.body.user).to.have.property('name', novoNome);
+      expect(response.body.user).to.have.property('name', newName);
       expect(response.body).to.have.property('message', "User updated successfully.");
-    });
-  });
-
-  it('Should return error when trying to update a non-existent user', () => {
-    const fakeUserId = 999999;
-
-    cy.request({
-      method: 'PUT',
-      url: `/users/${fakeUserId}`,
-      failOnStatusCode: false,
-      body: {
-        name: faker.person.fullName()
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(404);
-      expect(response.body).to.have.property('error', 'User not found.');
     });
   });
 
@@ -95,7 +77,7 @@ describe('User tests', () => {
 
 });
 
-describe('User Tests with error', () => {
+describe('User - Error Handling', () => {
 
   it("Should not allow user creation without name", () => {
     createUser({
@@ -158,6 +140,22 @@ describe('User Tests with error', () => {
         expect(response2.status).to.eq(409);
         expect(response2.body).to.have.property('error', 'A user with this name or email already exists.');
       });
+    });
+  });
+
+  it('Should return error when trying to update a non-existent user', () => {
+    const fakeUserId = 999999;
+
+    cy.request({
+      method: 'PUT',
+      url: `/users/${fakeUserId}`,
+      failOnStatusCode: false,
+      body: {
+        name: faker.person.fullName()
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(404);
+      expect(response.body).to.have.property('error', 'User not found.');
     });
   });
 
