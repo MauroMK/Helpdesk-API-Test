@@ -5,7 +5,6 @@ describe('Tickets - Success Cases', () => {
 
   let ticketId;
   let userId;
-  const fakeTicketId = 999999;
   const statusOptions = ['On Hold', 'In Progress', 'Closed'];
 
   before(() => {
@@ -40,17 +39,6 @@ describe('Tickets - Success Cases', () => {
     });
   });
 
-  it('Should return error when trying to retrieve a ticket with wrong Id', () => {
-    cy.request({
-      method: 'GET',
-      url: `/tickets/${fakeTicketId}`,
-      failOnStatusCode: false,
-    }).then((response) => {
-      expect(response.status).to.eq(404);
-      expect(response.body).to.have.property('error', 'Ticket not found.');
-    });
-  });
-
   it('Should update the ticket status', () => {
     const chosenStatus = faker.helpers.arrayElement(statusOptions);
 
@@ -59,20 +47,6 @@ describe('Tickets - Success Cases', () => {
     }).then((response) => {
       expect(response.status).to.eq(200);
       expect(response.body.ticket).to.have.property('status', chosenStatus);
-    });
-  });
-
-  it('Should return error when trying to update a non-existent ticket status', () => {
-    cy.request({
-      method: 'PUT',
-      url: `/tickets/${fakeTicketId}/status`,
-      failOnStatusCode: false,
-      body: {
-        status: 'Closed'
-      }
-    }).then((response) => {
-      expect(response.status).to.eq(404);
-      expect(response.body).to.have.property('error', 'Ticket not found.');
     });
   });
 
@@ -98,6 +72,8 @@ describe('Tickets - Success Cases', () => {
 });
 
 describe('Tickets - Error Handling', () => {
+
+  const fakeTicketId = 999999;
 
   it('Should not allow ticket creation without userId', () => {
     const ticket = generateFakeTicket();
@@ -134,6 +110,31 @@ describe('Tickets - Error Handling', () => {
       expect(response.status).to.eq(404);
       expect(response.body).to.have.property('error');
       expect(response.body.error.toLowerCase()).to.include('user');
+    });
+  });
+
+  it('Should return error when trying to retrieve a ticket with wrong Id', () => {
+    cy.request({
+      method: 'GET',
+      url: `/tickets/${fakeTicketId}`,
+      failOnStatusCode: false,
+    }).then((response) => {
+      expect(response.status).to.eq(404);
+      expect(response.body).to.have.property('error', 'Ticket not found.');
+    });
+  });
+
+  it('Should return error when trying to update a non-existent ticket status', () => {
+    cy.request({
+      method: 'PUT',
+      url: `/tickets/${fakeTicketId}/status`,
+      failOnStatusCode: false,
+      body: {
+        status: 'Closed'
+      }
+    }).then((response) => {
+      expect(response.status).to.eq(404);
+      expect(response.body).to.have.property('error', 'Ticket not found.');
     });
   });
 })

@@ -1,27 +1,41 @@
 # Helpdesk-API-Test
 Desafio de Automação de Testes - Helpdesk API
 
-COMO REALIZAR OS TESTES
+## 📦 Tecnologias utilizadas
 
-1° - Clonar o repositório da API helpdesk
+- [Cypress](https://www.cypress.io/)
+- [Faker.js](https://www.npmjs.com/package/@faker-js/faker)
+- [MochaAwesome](https://www.npmjs.com/package/mochawesome)
 
-git clone https://github.com/automacaohml/helpdesk-api.git
-cd helpdesk-api
+## 📁 Pré-requisitos
 
-2° - Instalar as dependências
+- Node.js (v14 ou superior)
+- Gerenciador de pacotes `npm` ou `yarn`
+- API do Helpdesk rodando localmente em `http://localhost:3000`
 
-npm install
+## Como realizar os testes
 
-3° - Iniciar a API
+1. Clonar o repositório da API helpdesk
 
-node server.js
+- git clone https://github.com/automacaohml/helpdesk-api.git
+- cd helpdesk-api
 
-4° - Clonar este repositório
+2. Instalar as dependências
 
-git clone https://github.com/MauroMK/Helpdesk-API-Test
-cd helpdesk-api-tests
-npm install
+- npm install
 
-5° - Execute os testes
+3. Iniciar a API
 
-npx cypress open
+- node server.js
+
+4. Clonar este repositório
+
+- git clone https://github.com/MauroMK/Helpdesk-API-Test
+- cd helpdesk-api-tests
+- npm install
+
+5. Execute os testes
+
+- npx cypress open
+
+- npx cypress run (para gerar o relatório do mochawesome)

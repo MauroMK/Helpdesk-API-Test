@@ -3,6 +3,6 @@ cypress/videos/
 cypress/reports/
 mochawesome-report/
 mochawesome.json
-node_modules/
+node_modules
 *.log
 .DS_Store
