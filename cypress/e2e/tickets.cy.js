@@ -19,7 +19,7 @@ describe('Tickets - Success Cases', () => {
     const ticket = generateFakeTicket({ userId });
 
     createTicket({ data: ticket }).then((response) => {
-      console.log("Created ticket", response);
+      cy.log(`Ticket created with ID: ${response.body.id}`);
       expect(response.status).to.eq(201);
       expect(response.body).to.have.property('id');
       expect(response.body).to.include({
@@ -32,6 +32,7 @@ describe('Tickets - Success Cases', () => {
   });
 
   it('Should retrieve a ticket by ID', () => {
+    cy.log(`Fetching ticket with ID: ${ticketId}`);
     cy.request("GET", `/tickets/${ticketId}`).should((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.have.property('id', ticketId);
@@ -41,6 +42,7 @@ describe('Tickets - Success Cases', () => {
 
   it('Should update the ticket status', () => {
     const chosenStatus = faker.helpers.arrayElement(statusOptions);
+    cy.log(`Updating ticket status to: ${chosenStatus}`);
 
     cy.request("PUT", `/tickets/${ticketId}/status`, {
       status: chosenStatus
@@ -59,6 +61,7 @@ describe('Tickets - Success Cases', () => {
   });
 
   it('Should not find the deleted ticket', () => {
+    cy.log(`Trying to fetch deleted ticket ID: ${ticketId}`);
     cy.request({
       method: "GET",
       url: `/tickets/${ticketId}`,
@@ -79,6 +82,8 @@ describe('Tickets - Error Handling', () => {
     const ticket = generateFakeTicket();
     delete ticket.userId;
 
+    cy.log('Creating ticket without userId');
+
     createTicket({ data: ticket, acceptError: true }).then((response) => {
       expect(response.status).to.eq(400);
       expect(response.body).to.have.property('error', 'The fields userId and description are required.');
@@ -88,6 +93,8 @@ describe('Tickets - Error Handling', () => {
   it('Should not allow ticket creation without description', () => {
     const ticket = generateFakeTicket();
     delete ticket.description;
+
+    cy.log('Creating ticket without description');
 
     createTicket({ data: ticket, acceptError: true }).then((response) => {
       expect(response.status).to.eq(400);
@@ -137,4 +144,6 @@ describe('Tickets - Error Handling', () => {
       expect(response.body).to.have.property('error', 'Ticket not found.');
     });
   });
+
+
 })

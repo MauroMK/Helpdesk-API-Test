@@ -1,25 +1,42 @@
-## 🔍 Funcionalidades cobertas
+## 🔍 Covered Features
 
-### 🔹 Usuários
+This project includes automated tests for a Helpdesk API, covering both users and tickets functionalities.
 
-- Criação de usuário com dados válidos
-- Validação de campos obrigatórios (`name`, `email`)
-- Impedimento de criação com nome ou e-mail duplicado
-- Atualização de dados de usuário
-- Recuperação por ID
-- Exclusão de usuário
-- Verificação de schema e status code
-- Validação de erro ao tentar atualizar usuário inexistente
+## Test structure
+
+- `cypress/e2e/users.spec.js`: tests related to user creation, update, deletion, and validation.
+- `cypress/e2e/tickets.spec.js`: tests related to ticket creation, update, deletion, and validation.
+- `cypress/support/utils.js`: reusable helper functions, such as fake data generation and request utilities.
+
+---
+
+### 🔹 Users
+
+- User creation with valid data
+- Validation of required fields (`name`, `email`)
+- Prevention of creation with duplicate name or email
+- User data update
+- Retrieval by ID
+- User deletion
+- Schema and status code validation
+- Error validation when attempting to update a non-existent user
 
 ### 🔹 Tickets
 
-- Criação de ticket com `userId` válido
-- Validação de campos obrigatórios (`userId`, `description`)
-- Recuperação por ID
-- Atualização de status
-- Exclusão de ticket e confirmação da remoção
-- Validação de erro ao utilizar `userId` inexistente
-- Validação de erro ao tentar atualizar ticket inexistente
-- Validação de schema e status code
+- Ticket creation with a valid `userId`
+- Validation of required fields (`userId`, `description`)
+- Retrieval by ID
+- Status update
+- Ticket deletion and confirmation of removal
+- Error validation when using a non-existent `userId`
+- Schema and status code validation
+- Error validation when attempting to update a non-existent ticket
 
 ---
+
+### 🔹 Suggestions for Improvement
+
+- Implement field-level validation for emails (e.g., invalid formats like "abc.com")
+- Add pagination and filtering to `/users` and `/tickets` endpoints
+- Return more detailed error messages (e.g., which field is invalid)
+- Add authentication and authorization to protect endpoints

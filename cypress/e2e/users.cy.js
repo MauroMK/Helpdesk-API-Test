@@ -14,8 +14,8 @@ describe('Users - Success Cases', () => {
     createUser({ data: user }).then((response) => {
       expect(response.status).to.eq(201);
       expect(response.body).to.have.property('id');
-      cy.log(`User created with ID ${response.body.id}`);
       userId = response.body.id;
+      cy.log(`User created with ID ${userId}`);
     });
   });
 
@@ -29,6 +29,7 @@ describe('Users - Success Cases', () => {
 
   it("Should retrieve a user by ID", () => {
     expect(userId).to.exist;
+    cy.log(`🔍 Fetching user with ID: ${userId}`);
 
     cy.request("GET", `/users/${userId}`).should((response) => {
       console.log("Specific user", response);
@@ -40,6 +41,8 @@ describe('Users - Success Cases', () => {
 
   it("Should update an existing user's data", () => {
     const newName = `QA ${Date.now()}`;
+    cy.log(`Updating user ${userId} name to: ${newName}`);
+
     cy.request("PUT", `/users/${userId}`, { name: newName }).then((response) => {
       console.log("User updated", response);
       expect(response.status).to.eq(200);
@@ -49,6 +52,8 @@ describe('Users - Success Cases', () => {
   });
 
   it("Should validate the schema of the returned user", () => {
+    cy.log(`Validating schema of user with ID: ${userId}`);
+
     cy.request(`GET`, `/users/${userId}`).should((response) => {
       expect(response.status).to.eq(200);
       expect(response.body).to.have.all.keys('id', 'name', 'email');
@@ -59,12 +64,16 @@ describe('Users - Success Cases', () => {
   });
 
   it("Should delete a newly created user", () => {
+    cy.log(`Deleting user with ID: ${userId}`);
+
     cy.request("DELETE", `/users/${userId}`).then((response) => {
       expect(response.status).to.be.oneOf([200, 204]);
     });
   });
 
   it("Should not find the deleted user", () => {
+    cy.log(`Attempting to fetch deleted user with ID: ${userId}`);
+
     cy.request({
       method: 'GET',
       url: `/users/${userId}`,
@@ -80,6 +89,8 @@ describe('Users - Success Cases', () => {
 describe('User - Error Handling', () => {
 
   it("Should not allow user creation without name", () => {
+    cy.log('Trying to create user without name');
+
     createUser({
       data: { email: generateFakeUser().email },
       acceptError: true
@@ -90,6 +101,8 @@ describe('User - Error Handling', () => {
   });
 
   it("Should not allow user creation without email", () => {
+    cy.log('Trying to create user without email');
+
     createUser({
       data: { name: generateFakeUser().name },
       acceptError: true
@@ -105,6 +118,7 @@ describe('User - Error Handling', () => {
     const email2 = faker.internet.email();
 
     // First user
+    cy.log(`Testing duplicate name: ${name}`);
     cy.request('POST', '/users', { name, email: email1 }).then((response1) => {
       expect(response1.status).to.eq(201);
 
