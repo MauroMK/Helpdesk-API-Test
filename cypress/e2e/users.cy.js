@@ -51,18 +51,6 @@ describe('Users - Success Cases', () => {
     });
   });
 
-  it("Should validate the schema of the returned user", () => {
-    cy.log(`Validating schema of user with ID: ${userId}`);
-
-    cy.request(`GET`, `/users/${userId}`).should((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body).to.have.all.keys('id', 'name', 'email');
-      expect(response.body.id).to.be.a('number');
-      expect(response.body.name).to.be.a('string');
-      expect(response.body.email).to.include('@');
-    });
-  });
-
   it("Should delete a newly created user", () => {
     cy.log(`Deleting user with ID: ${userId}`);
 
@@ -71,7 +59,7 @@ describe('Users - Success Cases', () => {
     });
   });
 
-  it("Should not find the deleted user", () => {
+  it("Should not find the deleted user", () => {  
     cy.log(`Attempting to fetch deleted user with ID: ${userId}`);
 
     cy.request({

@@ -1,0 +1,43 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Schema Validator",
+    "description": "Schema definition for the `/users` endpoint",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/users": {
+      "get": {
+        "summary": "Get list of users",
+        "description": "Returns a list of users with user details.",
+        "responses": {
+          "200": {
+            "description": "A successful response containing a list of users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["id", "name", "email"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
